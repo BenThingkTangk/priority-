@@ -1,0 +1,1501 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ATOM Priority Command</title>
+
+  <link href="https://api.fontshare.com/v2/css?f[]=satoshi@300,400,500,700,900&f[]=cabinet-grotesk@400,500,700,800&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+
+  <style>
+    :root {
+      --font-display: 'Cabinet Grotesk', 'Satoshi', sans-serif;
+      --font-body: 'Satoshi', 'Inter', sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+
+      --text-xs: clamp(0.75rem, 0.7rem + 0.25vw, 0.875rem);
+      --text-sm: clamp(0.875rem, 0.8rem + 0.35vw, 1rem);
+      --text-base: clamp(1rem, 0.95rem + 0.25vw, 1.125rem);
+      --text-lg: clamp(1.125rem, 1rem + 0.75vw, 1.5rem);
+      --text-xl: clamp(1.5rem, 1.2rem + 1.25vw, 2.25rem);
+      --text-2xl: clamp(2rem, 1.2rem + 2.5vw, 3.5rem);
+      --text-3xl: clamp(2.5rem, 1rem + 4vw, 5rem);
+
+      --space-1: 0.25rem;
+      --space-2: 0.5rem;
+      --space-3: 0.75rem;
+      --space-4: 1rem;
+      --space-5: 1.25rem;
+      --space-6: 1.5rem;
+      --space-8: 2rem;
+      --space-10: 2.5rem;
+      --space-12: 3rem;
+      --space-16: 4rem;
+      --space-20: 5rem;
+      --space-24: 6rem;
+
+      --radius-sm: 0.375rem;
+      --radius-md: 0.5rem;
+      --radius-lg: 0.75rem;
+      --radius-xl: 1rem;
+      --radius-2xl: 1.5rem;
+      --radius-full: 9999px;
+
+      --content-default: 1100px;
+      --content-wide: 1380px;
+      --transition: 180ms cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    [data-theme="dark"], :root {
+      --color-bg: #0b0b0c;
+      --color-surface: #111113;
+      --color-surface-2: #161618;
+      --color-surface-3: #1c1c1f;
+      --color-surface-4: #222226;
+      --color-border: rgba(255,255,255,0.08);
+      --color-border-bright: rgba(255,255,255,0.14);
+      --color-divider: rgba(255,255,255,0.05);
+      --color-text: #e8e8ea;
+      --color-text-muted: #8a8a96;
+      --color-text-faint: #4a4a55;
+      --color-text-inverse: #0b0b0c;
+      --color-primary: #00c8c8;
+      --color-primary-dim: #00989c;
+      --color-primary-glow: rgba(0, 200, 200, 0.15);
+      --color-primary-glow-strong: rgba(0, 200, 200, 0.25);
+      --color-claude: #c084fc;
+      --color-claude-dim: #9333ea;
+      --color-claude-glow: rgba(192,132,252,0.12);
+      --color-hume: #ff7b6b;
+      --color-hume-dim: #e05a4a;
+      --color-hume-glow: rgba(255,123,107,0.12);
+      --color-samba: #f5c842;
+      --color-samba-dim: #d4a51e;
+      --color-samba-glow: rgba(245,200,66,0.12);
+      --color-gpt: #74c0fc;
+      --color-gpt-dim: #4a9fd9;
+      --color-gpt-glow: rgba(116,192,252,0.12);
+      --shadow-sm: 0 1px 3px rgba(0,0,0,0.4);
+      --shadow-md: 0 4px 16px rgba(0,0,0,0.5);
+      --shadow-lg: 0 12px 40px rgba(0,0,0,0.6);
+      --shadow-xl: 0 24px 64px rgba(0,0,0,0.7);
+    }
+
+    [data-theme="light"] {
+      --color-bg: #f4f3ef;
+      --color-surface: #f9f8f5;
+      --color-surface-2: #ffffff;
+      --color-surface-3: #f0efe9;
+      --color-surface-4: #e8e7e0;
+      --color-border: rgba(0,0,0,0.09);
+      --color-border-bright: rgba(0,0,0,0.14);
+      --color-divider: rgba(0,0,0,0.05);
+      --color-text: #1a1a1e;
+      --color-text-muted: #5a5a65;
+      --color-text-faint: #9a9aa5;
+      --color-text-inverse: #f4f3ef;
+      --color-primary: #007b7b;
+      --color-primary-dim: #005f5f;
+      --color-primary-glow: rgba(0,123,123,0.10);
+      --color-primary-glow-strong: rgba(0,123,123,0.18);
+      --color-claude: #7c3aed;
+      --color-claude-dim: #5b21b6;
+      --color-claude-glow: rgba(124,58,237,0.10);
+      --color-hume: #e5533e;
+      --color-hume-dim: #b83d2a;
+      --color-hume-glow: rgba(229,83,62,0.10);
+      --color-samba: #b58b00;
+      --color-samba-dim: #8a6800;
+      --color-samba-glow: rgba(181,139,0,0.10);
+      --color-gpt: #0072c6;
+      --color-gpt-dim: #005a9e;
+      --color-gpt-glow: rgba(0,114,198,0.10);
+      --shadow-sm: 0 1px 3px rgba(0,0,0,0.08);
+      --shadow-md: 0 4px 16px rgba(0,0,0,0.10);
+      --shadow-lg: 0 12px 40px rgba(0,0,0,0.13);
+      --shadow-xl: 0 24px 64px rgba(0,0,0,0.16);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; scroll-padding-top: var(--space-16); }
+    body {
+      font-family: var(--font-body);
+      font-size: var(--text-base);
+      color: var(--color-text);
+      background:
+        radial-gradient(circle at top right, var(--color-primary-glow), transparent 28%),
+        radial-gradient(circle at top left, var(--color-claude-glow), transparent 22%),
+        var(--color-bg);
+      min-height: 100dvh;
+      line-height: 1.65;
+      overflow-x: hidden;
+    }
+    img, svg { display: block; max-width: 100%; height: auto; }
+    a, button, [role="button"] {
+      transition: color var(--transition), background var(--transition), border-color var(--transition), box-shadow var(--transition), opacity var(--transition), transform var(--transition);
+    }
+    button { cursor: pointer; background: none; border: none; font: inherit; color: inherit; }
+    h1, h2, h3, h4, h5, h6 { font-family: var(--font-display); text-wrap: balance; line-height: 1.1; }
+    p, li { text-wrap: pretty; max-width: 72ch; }
+    ::selection { background: var(--color-primary-glow-strong); color: var(--color-text); }
+    :focus-visible { outline: 2px solid var(--color-primary); outline-offset: 3px; border-radius: var(--radius-sm); }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+      html { scroll-behavior: auto; }
+    }
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: var(--color-bg); }
+    ::-webkit-scrollbar-thumb { background: var(--color-surface-4); border-radius: 3px; }
+    ::-webkit-scrollbar-thumb:hover { background: var(--color-text-faint); }
+
+    .container { max-width: var(--content-default); margin-inline: auto; padding-inline: clamp(var(--space-4), 4vw, var(--space-12)); }
+    .container--wide { max-width: var(--content-wide); }
+    .section { padding-block: clamp(var(--space-16), 8vw, var(--space-24)); }
+    .section--tight { padding-block: clamp(var(--space-10), 5vw, var(--space-16)); }
+
+    .skip-link {
+      position: absolute;
+      left: var(--space-4);
+      top: -48px;
+      background: var(--color-primary);
+      color: var(--color-text-inverse);
+      padding: var(--space-2) var(--space-4);
+      border-radius: var(--radius-lg);
+      z-index: 300;
+      text-decoration: none;
+    }
+    .skip-link:focus { top: var(--space-4); }
+
+    .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(11,11,12,0.85);
+      backdrop-filter: blur(20px) saturate(1.4);
+      border-bottom: 1px solid var(--color-border);
+    }
+    [data-theme="light"] .site-header { background: rgba(244,243,239,0.88); }
+    .header-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--space-4);
+      min-height: 72px;
+    }
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: var(--space-3);
+      text-decoration: none;
+      color: var(--color-text);
+      min-width: 0;
+    }
+    .logo-mark { width: 36px; height: 36px; flex-shrink: 0; }
+    .logo-text {
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: var(--text-lg);
+      letter-spacing: -0.02em;
+      white-space: nowrap;
+    }
+    .logo-text span { color: var(--color-primary); }
+    .logo-text .pulse-o {
+      color: var(--color-primary);
+      text-shadow: 0 0 18px var(--color-primary-glow-strong);
+      animation: pulse-logo 2.4s ease-in-out infinite;
+    }
+    @keyframes pulse-logo {
+      0%, 100% { opacity: 1; text-shadow: 0 0 0 var(--color-primary-glow); }
+      50% { opacity: 0.92; text-shadow: 0 0 18px var(--color-primary-glow-strong); }
+    }
+
+    .nav-shell {
+      display: flex;
+      align-items: center;
+      gap: var(--space-4);
+      margin-left: auto;
+    }
+    .nav-links { display: flex; align-items: center; gap: var(--space-1); }
+    .nav-links a {
+      font-size: var(--text-sm);
+      font-weight: 500;
+      color: var(--color-text-muted);
+      text-decoration: none;
+      padding: var(--space-2) var(--space-3);
+      border-radius: var(--radius-md);
+    }
+    .nav-links a:hover { color: var(--color-text); background: var(--color-surface-3); }
+
+    .status-badge {
+      display: flex;
+      align-items: center;
+      gap: var(--space-2);
+      padding: var(--space-1) var(--space-3);
+      background: var(--color-surface-3);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-full);
+      font-size: var(--text-xs);
+      font-weight: 600;
+      color: var(--color-text-muted);
+      font-family: var(--font-mono);
+      white-space: nowrap;
+    }
+    .status-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: var(--radius-full);
+      background: var(--color-primary);
+      animation: pulse-dot 2s ease-in-out infinite;
+      flex: 0 0 auto;
+    }
+    @keyframes pulse-dot {
+      0%, 100% { opacity: 1; box-shadow: 0 0 0 0 var(--color-primary-glow); }
+      50% { opacity: 0.8; box-shadow: 0 0 0 5px rgba(0,200,200,0); }
+    }
+
+    .theme-toggle, .tab {
+      border: 1px solid var(--color-border);
+      background: var(--color-surface-2);
+      color: var(--color-text-muted);
+      min-height: 44px;
+      padding: 0 var(--space-4);
+      border-radius: var(--radius-lg);
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-2);
+    }
+    .theme-toggle:hover, .tab:hover {
+      background: var(--color-surface-3);
+      border-color: var(--color-border-bright);
+      color: var(--color-text);
+    }
+
+    .hero-shell {
+      position: relative;
+      border-bottom: 1px solid var(--color-divider);
+      overflow: clip;
+    }
+    .hero-shell::before,
+    .hero-shell::after {
+      content: "";
+      position: absolute;
+      inset: auto;
+      pointer-events: none;
+      filter: blur(30px);
+    }
+    .hero-shell::before {
+      width: 460px;
+      height: 460px;
+      right: -120px;
+      top: -80px;
+      background: radial-gradient(circle, var(--color-primary-glow-strong), transparent 62%);
+    }
+    .hero-shell::after {
+      width: 420px;
+      height: 420px;
+      left: -120px;
+      bottom: -160px;
+      background: radial-gradient(circle, var(--color-claude-glow), transparent 58%);
+    }
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.45fr 0.95fr;
+      gap: var(--space-10);
+      align-items: end;
+    }
+    .hero-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-2);
+      padding: var(--space-2) var(--space-4);
+      background: var(--color-primary-glow);
+      border: 1px solid rgba(0,200,200,0.25);
+      border-radius: var(--radius-full);
+      font-size: var(--text-xs);
+      font-weight: 700;
+      color: var(--color-primary);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      font-family: var(--font-mono);
+      margin-bottom: var(--space-6);
+    }
+    .hero-title {
+      font-size: var(--text-3xl);
+      font-weight: 900;
+      letter-spacing: -0.03em;
+      max-width: 11ch;
+      margin-bottom: var(--space-5);
+    }
+    .hero-sub {
+      font-size: var(--text-lg);
+      color: var(--color-text-muted);
+      max-width: 48ch;
+      margin-bottom: var(--space-8);
+    }
+    .hero-actions { display: flex; flex-wrap: wrap; gap: var(--space-3); }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-2);
+      padding: var(--space-3) var(--space-6);
+      border-radius: var(--radius-lg);
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: var(--text-sm);
+      text-decoration: none;
+      cursor: pointer;
+      border: none;
+      letter-spacing: 0.01em;
+    }
+    .btn--primary {
+      background: var(--color-primary);
+      color: var(--color-text-inverse);
+      box-shadow: 0 0 24px var(--color-primary-glow-strong);
+    }
+    .btn--primary:hover {
+      background: var(--color-primary-dim);
+      box-shadow: 0 0 32px var(--color-primary-glow), var(--shadow-md);
+      transform: translateY(-1px);
+    }
+    .btn--ghost {
+      background: transparent;
+      color: var(--color-text-muted);
+      border: 1px solid var(--color-border);
+    }
+    .btn--ghost:hover {
+      color: var(--color-text);
+      border-color: var(--color-border-bright);
+      background: var(--color-surface-3);
+      transform: translateY(-1px);
+    }
+
+    .card {
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-xl);
+      padding: var(--space-6);
+      position: relative;
+      overflow: hidden;
+      transition: border-color var(--transition), box-shadow var(--transition), transform var(--transition);
+      box-shadow: var(--shadow-sm);
+    }
+    .card:hover { border-color: var(--color-border-bright); box-shadow: var(--shadow-md); }
+    .card--glow-teal:hover { border-color: rgba(0,200,200,0.4); box-shadow: 0 0 32px var(--color-primary-glow), var(--shadow-lg); }
+    .card--glow-purple:hover { border-color: rgba(192,132,252,0.4); box-shadow: 0 0 32px var(--color-claude-glow), var(--shadow-lg); }
+    .card--glow-coral:hover { border-color: rgba(255,123,107,0.4); box-shadow: 0 0 32px var(--color-hume-glow), var(--shadow-lg); }
+    .card--glow-gold:hover { border-color: rgba(245,200,66,0.4); box-shadow: 0 0 32px var(--color-samba-glow), var(--shadow-lg); }
+    .card--glow-blue:hover { border-color: rgba(116,192,252,0.4); box-shadow: 0 0 32px var(--color-gpt-glow), var(--shadow-lg); }
+
+    .hero-proof {
+      display: grid;
+      gap: var(--space-4);
+      background: linear-gradient(180deg, color-mix(in srgb, var(--color-surface-2) 100%, transparent), color-mix(in srgb, var(--color-surface) 100%, transparent));
+    }
+    .hero-proof h2 { font-size: var(--text-xl); font-weight: 800; letter-spacing: -0.03em; }
+    .hero-proof p { color: var(--color-text-muted); }
+    .proof-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: var(--space-3);
+      margin-top: var(--space-2);
+    }
+    .metric-card {
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-xl);
+      padding: var(--space-5) var(--space-6);
+      text-align: center;
+    }
+    .metric-value {
+      font-family: var(--font-display);
+      font-size: var(--text-2xl);
+      font-weight: 900;
+      letter-spacing: -0.03em;
+      line-height: 1;
+    }
+    .metric-value--teal { color: var(--color-primary); }
+    .metric-value--purple { color: var(--color-claude); }
+    .metric-value--gold { color: var(--color-samba); }
+    .metric-value--blue { color: var(--color-gpt); }
+    .metric-label {
+      font-size: var(--text-xs);
+      color: var(--color-text-faint);
+      font-family: var(--font-mono);
+      margin-top: var(--space-2);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+    .metric-note {
+      font-size: var(--text-xs);
+      color: var(--color-text-muted);
+      margin-top: var(--space-1);
+    }
+
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: end;
+      gap: var(--space-6);
+      margin-bottom: var(--space-10);
+      flex-wrap: wrap;
+    }
+    .section-label {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-2);
+      padding: var(--space-1) var(--space-3);
+      background: var(--color-surface-3);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-full);
+      font-size: var(--text-xs);
+      font-weight: 700;
+      color: var(--color-text-faint);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      font-family: var(--font-mono);
+      margin-bottom: var(--space-5);
+      width: fit-content;
+    }
+    .section-heading {
+      font-size: var(--text-2xl);
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      margin-bottom: var(--space-4);
+    }
+    .section-sub {
+      font-size: var(--text-base);
+      color: var(--color-text-muted);
+      max-width: 58ch;
+    }
+
+    .metric-strip {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: var(--space-4);
+    }
+    .metric-strip .card {
+      min-height: 196px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      text-align: left;
+    }
+    .metric-strip .metric-value {
+      text-align: left;
+      margin-top: var(--space-3);
+      font-size: clamp(2rem, 2vw + 1rem, 3rem);
+    }
+    .metric-copy { color: var(--color-text-muted); font-size: var(--text-sm); max-width: 28ch; }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1.45fr 0.95fr;
+      gap: var(--space-6);
+      align-items: start;
+    }
+    .stack { display: grid; gap: var(--space-4); }
+
+    .tabs { display: flex; flex-wrap: wrap; gap: var(--space-2); }
+    .tab[aria-pressed="true"] {
+      background: var(--color-primary-glow);
+      border-color: rgba(0,200,200,0.3);
+      color: var(--color-primary);
+      box-shadow: inset 0 0 0 1px rgba(0,200,200,0.1);
+    }
+
+    .priority-list { display: grid; gap: var(--space-4); }
+    .priority-item {
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      gap: var(--space-5);
+      padding: var(--space-5);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-xl);
+      background: var(--color-surface-2);
+      transition: border-color var(--transition), box-shadow var(--transition), transform var(--transition), opacity var(--transition);
+    }
+    .priority-item:hover {
+      border-color: var(--color-border-bright);
+      transform: translateY(-1px);
+      box-shadow: var(--shadow-md);
+    }
+    .priority-rank {
+      width: 42px;
+      height: 42px;
+      border-radius: var(--radius-lg);
+      background: var(--color-primary-glow);
+      border: 1px solid rgba(0,200,200,0.25);
+      color: var(--color-primary);
+      display: grid;
+      place-items: center;
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      font-weight: 700;
+      letter-spacing: 0.08em;
+    }
+    .priority-copy h3 {
+      font-size: var(--text-xl);
+      font-weight: 700;
+      letter-spacing: 0;
+      margin-bottom: var(--space-2);
+    }
+    .priority-copy p { color: var(--color-text-muted); }
+    .priority-copy ul {
+      margin-top: var(--space-4);
+      padding-left: 1.1rem;
+      display: grid;
+      gap: var(--space-2);
+      color: var(--color-text-muted);
+    }
+    .priority-meta {
+      display: grid;
+      justify-items: end;
+      align-content: start;
+      gap: var(--space-3);
+    }
+    .check-btn {
+      width: 44px;
+      height: 44px;
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--color-border);
+      background: var(--color-surface-3);
+      color: var(--color-text-muted);
+    }
+    .check-btn:hover {
+      color: var(--color-text);
+      border-color: var(--color-border-bright);
+      background: var(--color-surface-4);
+    }
+    .priority-item.done {
+      opacity: 0.72;
+      border-color: rgba(0,200,200,0.26);
+      box-shadow: 0 0 24px var(--color-primary-glow), var(--shadow-sm);
+    }
+    .priority-item.done .check-btn {
+      background: var(--color-primary);
+      color: var(--color-text-inverse);
+      border-color: transparent;
+      box-shadow: 0 0 24px var(--color-primary-glow-strong);
+    }
+    .priority-item.done h3,
+    .priority-item.done p,
+    .priority-item.done li {
+      text-decoration: line-through;
+      text-decoration-color: var(--color-primary-dim);
+    }
+
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-1);
+      padding: var(--space-1) var(--space-3);
+      border-radius: var(--radius-full);
+      font-size: var(--text-xs);
+      font-weight: 600;
+      font-family: var(--font-mono);
+      border: 1px solid;
+      white-space: nowrap;
+    }
+    .tag--teal { background: var(--color-primary-glow); border-color: rgba(0,200,200,0.3); color: var(--color-primary); }
+    .tag--purple { background: var(--color-claude-glow); border-color: rgba(192,132,252,0.3); color: var(--color-claude); }
+    .tag--coral { background: var(--color-hume-glow); border-color: rgba(255,123,107,0.3); color: var(--color-hume); }
+    .tag--gold { background: var(--color-samba-glow); border-color: rgba(245,200,66,0.3); color: var(--color-samba); }
+    .tag--blue { background: var(--color-gpt-glow); border-color: rgba(116,192,252,0.3); color: var(--color-gpt); }
+    .tag--amber { background: rgba(240,168,48,0.12); border-color: rgba(240,168,48,0.3); color: #f0a830; }
+
+    .chip {
+      padding: 2px var(--space-2);
+      border-radius: var(--radius-sm);
+      font-size: 0.65rem;
+      font-weight: 600;
+      font-family: var(--font-mono);
+      border: 1px solid;
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-1);
+      white-space: nowrap;
+    }
+    .chip--teal { background: var(--color-primary-glow); border-color: rgba(0,200,200,0.25); color: var(--color-primary); }
+    .chip--purple { background: var(--color-claude-glow); border-color: rgba(192,132,252,0.25); color: var(--color-claude); }
+    .chip--gold { background: var(--color-samba-glow); border-color: rgba(245,200,66,0.25); color: var(--color-samba); }
+    .chip--neutral { background: var(--color-surface-3); border-color: var(--color-border); color: var(--color-text-muted); }
+
+    .signal-list { display: grid; gap: var(--space-4); }
+    .signal-card h3 {
+      font-size: var(--text-xl);
+      margin-bottom: var(--space-2);
+      letter-spacing: 0;
+    }
+    .signal-card p, .signal-card li { color: var(--color-text-muted); }
+    .signal-card ul { margin-top: var(--space-4); padding-left: 1rem; display: grid; gap: var(--space-2); }
+
+    .phase-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: var(--space-4);
+    }
+    .phase-card {
+      min-height: 236px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .phase-card h3 { font-size: var(--text-xl); margin: var(--space-3) 0; }
+    .phase-card p { color: var(--color-text-muted); }
+    .bars {
+      display: flex;
+      align-items: end;
+      gap: 10px;
+      min-height: 104px;
+      margin-top: var(--space-6);
+    }
+    .bars span {
+      flex: 1;
+      border-radius: var(--radius-full) var(--radius-full) var(--radius-sm) var(--radius-sm);
+      background: linear-gradient(180deg, var(--color-primary), transparent 120%);
+      box-shadow: inset 0 0 0 1px rgba(0,200,200,0.14);
+      transition: height 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .bars span:nth-child(2) { background: linear-gradient(180deg, var(--color-gpt), transparent 120%); box-shadow: inset 0 0 0 1px rgba(116,192,252,0.16); }
+    .bars span:nth-child(3) { background: linear-gradient(180deg, var(--color-claude), transparent 120%); box-shadow: inset 0 0 0 1px rgba(192,132,252,0.16); }
+    .bars span:nth-child(4) { background: linear-gradient(180deg, var(--color-samba), transparent 120%); box-shadow: inset 0 0 0 1px rgba(245,200,66,0.16); }
+
+    .matrix-grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-4); }
+    .matrix-card h3 { font-size: var(--text-xl); margin-bottom: var(--space-4); }
+    .matrix-card ul { padding-left: 1rem; display: grid; gap: var(--space-3); color: var(--color-text-muted); }
+
+    .timeline { display: grid; gap: var(--space-4); position: relative; }
+    .timeline::before {
+      content: "";
+      position: absolute;
+      left: 11px;
+      top: 14px;
+      bottom: 14px;
+      width: 1px;
+      background: linear-gradient(180deg, var(--color-primary-glow-strong), transparent);
+    }
+    .timeline-step {
+      display: grid;
+      grid-template-columns: 24px 1fr;
+      gap: var(--space-4);
+      position: relative;
+    }
+    .timeline-step .dot {
+      width: 24px;
+      height: 24px;
+      border-radius: var(--radius-full);
+      background: var(--color-primary);
+      box-shadow: 0 0 0 7px var(--color-primary-glow);
+      margin-top: 4px;
+    }
+    .timeline-step .panel {
+      background: var(--color-surface-2);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-xl);
+      padding: var(--space-5);
+    }
+    .timeline-step time {
+      font-family: var(--font-mono);
+      color: var(--color-text-faint);
+      font-size: var(--text-xs);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+    .timeline-step h3 {
+      font-size: var(--text-lg);
+      margin: var(--space-2) 0 var(--space-2);
+    }
+    .timeline-step p { color: var(--color-text-muted); }
+
+    .table-wrap {
+      overflow-x: auto;
+      border-radius: var(--radius-xl);
+      border: 1px solid var(--color-border);
+      background: var(--color-surface);
+      box-shadow: var(--shadow-sm);
+    }
+    .data-table { width: 100%; border-collapse: collapse; min-width: 720px; }
+    .data-table th {
+      background: var(--color-surface-3);
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      font-weight: 600;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+      color: var(--color-text-faint);
+      padding: var(--space-3) var(--space-5);
+      text-align: left;
+      border-bottom: 1px solid var(--color-border);
+    }
+    .data-table td {
+      padding: var(--space-4) var(--space-5);
+      font-size: var(--text-sm);
+      border-bottom: 1px solid var(--color-divider);
+      vertical-align: top;
+      color: var(--color-text-muted);
+    }
+    .data-table tr:last-child td { border-bottom: none; }
+    .data-table tr:hover td { background: var(--color-surface-2); }
+    .data-table td strong { color: var(--color-text); }
+    .align-right { text-align: right; }
+
+    .callout {
+      background: linear-gradient(135deg, var(--color-primary-glow), var(--color-claude-glow));
+      border: 1px solid rgba(0,200,200,0.2);
+      border-radius: var(--radius-2xl);
+      padding: var(--space-8) var(--space-10);
+      display: flex;
+      align-items: flex-start;
+      gap: var(--space-6);
+    }
+    .callout-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: var(--radius-xl);
+      background: var(--color-primary-glow-strong);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--color-primary);
+      flex-shrink: 0;
+      border: 1px solid rgba(0,200,200,0.3);
+      box-shadow: 0 0 24px var(--color-primary-glow);
+    }
+    .callout h3 { font-size: var(--text-xl); margin-bottom: var(--space-3); }
+    .callout p { color: var(--color-text-muted); }
+
+    .footer-notes {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--space-4);
+    }
+    .footer-notes ul { padding-left: 1rem; display: grid; gap: var(--space-2); color: var(--color-text-muted); }
+
+    .site-footer {
+      background: var(--color-surface);
+      border-top: 1px solid var(--color-border);
+      padding: var(--space-10) 0;
+      margin-top: var(--space-16);
+    }
+    .footer-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: var(--space-4);
+    }
+    .footer-brand { font-family: var(--font-mono); font-size: var(--text-xs); color: var(--color-text-faint); }
+    .footer-links { display: flex; gap: var(--space-4); flex-wrap: wrap; }
+    .footer-links a { font-size: var(--text-xs); color: var(--color-text-faint); text-decoration: none; }
+    .footer-links a:hover { color: var(--color-text-muted); }
+
+    .fade-in { opacity: 0; transform: translateY(16px); transition: opacity 420ms linear, transform 420ms var(--transition); }
+    .fade-in.is-visible { opacity: 1; transform: translateY(0); }
+
+    @supports (animation-timeline: scroll()) {
+      .fade-in {
+        opacity: 0;
+        animation: reveal-fade linear both;
+        animation-timeline: view();
+        animation-range: entry 0% entry 80%;
+        transform: none;
+      }
+      @keyframes reveal-fade { to { opacity: 1; } }
+      .reveal-up {
+        clip-path: inset(100% 0 0 0);
+        animation: reveal-clip linear both;
+        animation-timeline: view();
+        animation-range: entry 0% entry 85%;
+      }
+      @keyframes reveal-clip { to { clip-path: inset(0 0 0 0); } }
+    }
+
+    @media (max-width: 980px) {
+      .hero-grid,
+      .grid-2,
+      .matrix-grid,
+      .footer-notes,
+      .metric-strip,
+      .phase-grid { grid-template-columns: 1fr; }
+      .hero-title { max-width: none; }
+    }
+
+    @media (max-width: 768px) {
+      .nav-links, .status-badge { display: none; }
+      .callout, .footer-inner { flex-direction: column; align-items: flex-start; }
+      .priority-item { grid-template-columns: auto 1fr; }
+      .priority-meta { grid-column: 2; justify-items: start; }
+      .hero-actions .btn { width: 100%; justify-content: center; }
+      .tabs { width: 100%; }
+      .tab { flex: 1 1 calc(50% - var(--space-2)); justify-content: center; }
+    }
+
+    @media (max-width: 480px) {
+      .hero-actions,
+      .nav-shell { width: 100%; }
+      .theme-toggle { width: 100%; justify-content: center; }
+      .header-inner { align-items: flex-start; padding-block: var(--space-3); }
+      .logo-text { white-space: normal; }
+      .tab { flex: 1 1 100%; }
+    }
+  </style>
+</head>
+<body>
+  <a href="#main" class="skip-link">Skip to content</a>
+
+  <header class="site-header">
+    <div class="container container--wide header-inner">
+      <a href="#" class="logo" aria-label="ATOM Home">
+        <svg class="logo-mark" width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <circle cx="18" cy="18" r="17" stroke="currentColor" stroke-width="1.5" opacity="0.2"/>
+          <ellipse cx="18" cy="18" rx="10" ry="17" stroke="var(--color-primary)" stroke-width="1.5" fill="none"/>
+          <ellipse cx="18" cy="18" rx="17" ry="10" stroke="var(--color-primary)" stroke-width="1.5" fill="none" opacity="0.5"/>
+          <circle cx="18" cy="18" r="3" fill="var(--color-primary)"/>
+          <circle cx="18" cy="5" r="2" fill="var(--color-primary)" opacity="0.7"/>
+          <circle cx="18" cy="31" r="2" fill="var(--color-primary)" opacity="0.4"/>
+          <circle cx="5" cy="18" r="2" fill="var(--color-primary)" opacity="0.4"/>
+          <circle cx="31" cy="18" r="2" fill="var(--color-primary)" opacity="0.7"/>
+        </svg>
+        <span class="logo-text">AT<span class="pulse-o">O</span>M</span>
+      </a>
+
+      <div class="nav-shell">
+        <nav class="nav-links" aria-label="Primary navigation">
+          <a href="#priorities">Priorities</a>
+          <a href="#sequence">Sequence</a>
+          <a href="#matrix">Portfolio</a>
+          <a href="#gtm">GTM</a>
+        </nav>
+        <div class="status-badge" aria-label="System status: live">
+          <span class="status-dot" aria-hidden="true"></span>
+          ATOM LIVE
+        </div>
+        <button class="theme-toggle" type="button" data-theme-toggle aria-label="Switch theme">
+          <i data-lucide="sun-moon" width="16" height="16" aria-hidden="true"></i>
+          Theme
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="hero-shell section section--tight reveal-up">
+      <div class="container container--wide hero-grid">
+        <div>
+          <div class="hero-eyebrow fade-in">
+            <i data-lucide="layers" width="12" height="12" aria-hidden="true"></i>
+            Revised priority command · June 2026
+          </div>
+          <h1 class="hero-title fade-in">Operate the story. Monetize the spine.</h1>
+          <p class="hero-sub fade-in">
+            Today is not a product-sprawl day. It is a precision day: compress the ATOM narrative, package the Revenue Spine wedge, and convert infrastructure advantage into visible commercial proof.
+          </p>
+          <div class="hero-actions fade-in">
+            <a href="#priorities" class="btn btn--primary">
+              <i data-lucide="rocket" width="16" height="16" aria-hidden="true"></i>
+              Enter priority stack
+            </a>
+            <a href="#gtm" class="btn btn--ghost">
+              <i data-lucide="activity" width="16" height="16" aria-hidden="true"></i>
+              Open GTM sprint
+            </a>
+          </div>
+        </div>
+
+        <aside class="card card--glow-teal hero-proof fade-in" aria-label="Operating thesis proof block">
+          <h2>Operating thesis</h2>
+          <p>Lead with one platform and three wedges. Revenue first. Governance second. Long-horizon bets remain design-partner plays until the main category story is locked.</p>
+          <div class="proof-grid">
+            <div class="metric-card">
+              <div class="metric-value metric-value--teal">1</div>
+              <div class="metric-label">Platform frame</div>
+              <div class="metric-note">ΔTOM nervous system</div>
+            </div>
+            <div class="metric-card">
+              <div class="metric-value metric-value--purple">3</div>
+              <div class="metric-label">Commercial wedges</div>
+              <div class="metric-note">Revenue · Governance · Human performance</div>
+            </div>
+            <div class="metric-card">
+              <div class="metric-value metric-value--gold">Now</div>
+              <div class="metric-label">Immediate focus</div>
+              <div class="metric-note">Story, offer, outreach</div>
+            </div>
+            <div class="metric-card">
+              <div class="metric-value metric-value--blue">GPU</div>
+              <div class="metric-label">Investor signal</div>
+              <div class="metric-note">Attach capacity to ARR motion</div>
+            </div>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <section class="section fade-in">
+      <div class="container container--wide">
+        <div class="section-header">
+          <div>
+            <div class="section-label">
+              <i data-lucide="cpu" width="10" height="10" aria-hidden="true"></i>
+              Executive strip
+            </div>
+            <h2 class="section-heading">Today’s command metrics</h2>
+            <p class="section-sub">Every block below is tuned to one outcome: make the day executable, investor-literate, and commercially focused.</p>
+          </div>
+        </div>
+
+        <div class="metric-strip">
+          <article class="card card--glow-teal">
+            <div>
+              <span class="chip chip--teal">Primary job</span>
+              <div class="metric-value metric-value--teal">1 story</div>
+            </div>
+            <p class="metric-copy">Condense the portfolio into one repeatable narrative buyers and investors can retell without translation.</p>
+          </article>
+          <article class="card card--glow-purple">
+            <div>
+              <span class="chip chip--purple">Commercial mode</span>
+              <div class="metric-value metric-value--purple">2 offers</div>
+            </div>
+            <p class="metric-copy">Revenue Spine and AI Governance are the near-term wedges with the clearest urgency and shortest path to proof.</p>
+          </article>
+          <article class="card card--glow-gold">
+            <div>
+              <span class="chip chip--gold">GPU mandate</span>
+              <div class="metric-value metric-value--gold">0 idle</div>
+            </div>
+            <p class="metric-copy">No commodity compute story. Every GPU hour should map to usage, automation, latency, or governed enterprise value.</p>
+          </article>
+          <article class="card card--glow-blue">
+            <div>
+              <span class="chip chip--neutral">Founder cadence</span>
+              <div class="metric-value metric-value--blue">30 days</div>
+            </div>
+            <p class="metric-copy">Stand up a sprint with target accounts, wedge owners, and proof milestones that can feed investor updates.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="priorities" class="section fade-in">
+      <div class="container container--wide">
+        <div class="section-header">
+          <div>
+            <div class="section-label">
+              <i data-lucide="zap" width="10" height="10" aria-hidden="true"></i>
+              Priority stack
+            </div>
+            <h2 class="section-heading">What to prioritize today</h2>
+            <p class="section-sub">The order matters. Narrative unlocks packaging. Packaging unlocks outbound motion. Outbound motion creates the investor proof loop.</p>
+          </div>
+          <div class="tabs" role="group" aria-label="Priority filters">
+            <button class="tab" type="button" aria-pressed="true" data-filter="all">All</button>
+            <button class="tab" type="button" aria-pressed="false" data-filter="story">Story</button>
+            <button class="tab" type="button" aria-pressed="false" data-filter="revenue">Revenue</button>
+            <button class="tab" type="button" aria-pressed="false" data-filter="portal">Portal</button>
+            <button class="tab" type="button" aria-pressed="false" data-filter="gtm">GTM</button>
+          </div>
+        </div>
+
+        <div class="grid-2">
+          <article class="card">
+            <div class="section-label">
+              <i data-lucide="layers-3" width="10" height="10" aria-hidden="true"></i>
+              Execution sequence
+            </div>
+            <div class="priority-list">
+              <article class="priority-item" data-group="story">
+                <div class="priority-rank">01</div>
+                <div class="priority-copy">
+                  <h3>Condense the external narrative</h3>
+                  <p>Stop explaining a portfolio maze. Lead with one sentence: ΔTOM is the AI nervous system for the revenue organization.</p>
+                  <ul>
+                    <li>Write the 60-second investor pitch and buyer pitch.</li>
+                    <li>Shift from product inventory to wedge-based framing.</li>
+                    <li>Anchor the story in control, ROI, margin, and governance.</li>
+                  </ul>
+                </div>
+                <div class="priority-meta">
+                  <span class="tag tag--coral">Do first</span>
+                  <button class="check-btn" type="button" aria-label="Mark first priority complete">
+                    <i data-lucide="check" width="18" height="18" aria-hidden="true"></i>
+                  </button>
+                </div>
+              </article>
+
+              <article class="priority-item" data-group="revenue">
+                <div class="priority-rank">02</div>
+                <div class="priority-copy">
+                  <h3>Activate the Akamai Blackwell revenue engine</h3>
+                  <p>Turn infrastructure access into a sales multiplier by packaging latency, voice performance, and compute-included delivery directly into the commercial offer.</p>
+                  <ul>
+                    <li>Create a compute-included Revenue Spine package.</li>
+                    <li>Attach excess capacity to token-metered workflows, not raw GPU resale.</li>
+                    <li>Push one live enterprise prospect toward a pilot tied to measurable usage.</li>
+                  </ul>
+                </div>
+                <div class="priority-meta">
+                  <span class="tag tag--gold">Accelerate</span>
+                  <button class="check-btn" type="button" aria-label="Mark second priority complete">
+                    <i data-lucide="check" width="18" height="18" aria-hidden="true"></i>
+                  </button>
+                </div>
+              </article>
+
+              <article class="priority-item" data-group="revenue">
+                <div class="priority-rank">03</div>
+                <div class="priority-copy">
+                  <h3>Sell the right products now</h3>
+                  <p>Lead with Revenue Spine and Governance. Keep long-duration bets out of the near-term selling motion.</p>
+                  <ul>
+                    <li>Sell now: Sales Dominator, IntentIQ, Red Team, Enterprise AI.</li>
+                    <li>Sell later: PhysioPS / HumanOS, experimental console surfaces, deeper moat assets.</li>
+                    <li>Package around urgency and outcome, not internal org charts.</li>
+                  </ul>
+                </div>
+                <div class="priority-meta">
+                  <span class="tag tag--teal">Package</span>
+                  <button class="check-btn" type="button" aria-label="Mark third priority complete">
+                    <i data-lucide="check" width="18" height="18" aria-hidden="true"></i>
+                  </button>
+                </div>
+              </article>
+
+              <article class="priority-item" data-group="portal">
+                <div class="priority-rank">04</div>
+                <div class="priority-copy">
+                  <h3>Refactor the VC portal framing</h3>
+                  <p>The investor surface should express one platform and three wedges, not a long list of disconnected products.</p>
+                  <ul>
+                    <li>Rebuild the homepage hierarchy around the nervous-system thesis.</li>
+                    <li>Make Revenue, Governance, and Human Performance the clear top-level paths.</li>
+                    <li>Use proof and market signal before detailed product inventory.</li>
+                  </ul>
+                </div>
+                <div class="priority-meta">
+                  <span class="tag tag--blue">Portal</span>
+                  <button class="check-btn" type="button" aria-label="Mark fourth priority complete">
+                    <i data-lucide="check" width="18" height="18" aria-hidden="true"></i>
+                  </button>
+                </div>
+              </article>
+
+              <article class="priority-item" data-group="gtm">
+                <div class="priority-rank">05</div>
+                <div class="priority-copy">
+                  <h3>Launch the 30-day GTM sprint</h3>
+                  <p>Put owners, accounts, and targets on the board today so the plan becomes operational instead of conceptual.</p>
+                  <ul>
+                    <li>Select 5–10 target accounts for the Revenue Spine wedge.</li>
+                    <li>Assign one founder-owner per wedge and one shared pipeline dashboard.</li>
+                    <li>Set a day-30 target for pilots, meetings, and offer validation.</li>
+                  </ul>
+                </div>
+                <div class="priority-meta">
+                  <span class="tag tag--purple">Sprint</span>
+                  <button class="check-btn" type="button" aria-label="Mark fifth priority complete">
+                    <i data-lucide="check" width="18" height="18" aria-hidden="true"></i>
+                  </button>
+                </div>
+              </article>
+            </div>
+          </article>
+
+          <div class="stack signal-list">
+            <article class="card card--glow-coral signal-card">
+              <div class="section-label">
+                <i data-lucide="alert-triangle" width="10" height="10" aria-hidden="true"></i>
+                What today is not
+              </div>
+              <h3>Cut the noise</h3>
+              <ul>
+                <li>Not a feature expansion sprint.</li>
+                <li>Not a new-product brainstorm.</li>
+                <li>Not a generic brand exercise.</li>
+                <li>Not a raw infrastructure resale play.</li>
+              </ul>
+            </article>
+
+            <article class="card card--glow-teal signal-card">
+              <div class="section-label">
+                <i data-lucide="file-check" width="10" height="10" aria-hidden="true"></i>
+                Output before EOD
+              </div>
+              <h3>Required artifacts</h3>
+              <ul>
+                <li>One crisp 60-second platform pitch.</li>
+                <li>One two-offer GTM packaging brief.</li>
+                <li>One revised VC portal homepage structure.</li>
+                <li>One target-account sprint board.</li>
+              </ul>
+            </article>
+
+            <article class="card card--glow-purple signal-card">
+              <div class="section-label">
+                <i data-lucide="brain" width="10" height="10" aria-hidden="true"></i>
+                Narrative compression
+              </div>
+              <h3>Use this line</h3>
+              <p>We sell one platform, ΔTOM, that enterprises enter through three wedges. Revenue is the immediate wedge because it closes fastest and proves the economics of the nervous system.</p>
+            </article>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="sequence" class="section fade-in">
+      <div class="container container--wide">
+        <div class="section-header">
+          <div>
+            <div class="section-label">
+              <i data-lucide="activity" width="10" height="10" aria-hidden="true"></i>
+              Operating sequence
+            </div>
+            <h2 class="section-heading">How the day should run</h2>
+            <p class="section-sub">Use the first half of the day for message lock and offer design. Use the second half for portal revision and outward commercial motion.</p>
+          </div>
+        </div>
+
+        <div class="phase-grid">
+          <article class="card card--glow-teal phase-card">
+            <div>
+              <span class="chip chip--teal">Phase 1 · 60–90 min</span>
+              <h3>Message lock</h3>
+              <p>Draft the one-minute pitch, the one-line explanation, and the homepage headline stack for the Revenue Spine wedge.</p>
+            </div>
+            <div class="bars" aria-hidden="true">
+              <span style="height:48%"></span>
+              <span style="height:74%"></span>
+              <span style="height:62%"></span>
+              <span style="height:86%"></span>
+            </div>
+          </article>
+
+          <article class="card card--glow-gold phase-card">
+            <div>
+              <span class="chip chip--gold">Phase 2 · 90 min</span>
+              <h3>Offer package</h3>
+              <p>Convert the story into two buyable bundles with clear proof blocks, pricing logic, and GPU-backed performance language.</p>
+            </div>
+            <div class="bars" aria-hidden="true">
+              <span style="height:36%"></span>
+              <span style="height:64%"></span>
+              <span style="height:78%"></span>
+              <span style="height:92%"></span>
+            </div>
+          </article>
+
+          <article class="card card--glow-blue phase-card">
+            <div>
+              <span class="chip chip--neutral">Phase 3 · Afternoon</span>
+              <h3>Outbound conversion</h3>
+              <p>Update the investor surface, select target accounts, and move one live prospect into a concrete pilot or strategic call.</p>
+            </div>
+            <div class="bars" aria-hidden="true">
+              <span style="height:42%"></span>
+              <span style="height:58%"></span>
+              <span style="height:88%"></span>
+              <span style="height:70%"></span>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="matrix" class="section fade-in">
+      <div class="container container--wide">
+        <div class="section-header">
+          <div>
+            <div class="section-label">
+              <i data-lucide="archive" width="10" height="10" aria-hidden="true"></i>
+              Commercial sequencing
+            </div>
+            <h2 class="section-heading">Sell now vs later</h2>
+            <p class="section-sub">Keep the near-term motion narrow. The goal is to create market proof without asking buyers to absorb the full internal ambition stack all at once.</p>
+          </div>
+        </div>
+
+        <div class="matrix-grid">
+          <article class="card card--glow-teal matrix-card">
+            <div class="section-label">
+              <i data-lucide="rocket" width="10" height="10" aria-hidden="true"></i>
+              Sell now
+            </div>
+            <h3>Near-term revenue motion</h3>
+            <ul>
+              <li><strong>ATOM Sales Dominator</strong> — revenue acceleration wedge with immediate enterprise legibility.</li>
+              <li><strong>IntentIQ</strong> — signal and scoring layer that sharpens pipeline coverage and timing.</li>
+              <li><strong>ATOM Red Team</strong> — governance urgency is highly sellable right now.</li>
+              <li><strong>Enterprise AI</strong> — orchestration and deployment control plane for serious buyers.</li>
+            </ul>
+          </article>
+
+          <article class="card card--glow-purple matrix-card">
+            <div class="section-label">
+              <i data-lucide="clock-3" width="10" height="10" aria-hidden="true"></i>
+              Sell later
+            </div>
+            <h3>Longer-horizon assets</h3>
+            <ul>
+              <li><strong>PhysioPS / HumanOS</strong> — keep in design-partner motion until packaging and channel are tighter.</li>
+              <li><strong>Experimental console surfaces</strong> — strong brand theater, weaker immediate enterprise urgency.</li>
+              <li><strong>Deep moat assets</strong> — position for investors and strategic partners before wider packaging.</li>
+            </ul>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="gtm" class="section fade-in">
+      <div class="container container--wide">
+        <div class="section-header">
+          <div>
+            <div class="section-label">
+              <i data-lucide="phone-call" width="10" height="10" aria-hidden="true"></i>
+              30-day sprint
+            </div>
+            <h2 class="section-heading">GTM activation board</h2>
+            <p class="section-sub">This is the short-horizon sprint that turns the revised strategy into measurable activity, proof, and investor-grade operating signal.</p>
+          </div>
+        </div>
+
+        <div class="grid-2">
+          <article class="card">
+            <div class="section-label">
+              <i data-lucide="calendar-range" width="10" height="10" aria-hidden="true"></i>
+              Execution timeline
+            </div>
+            <div class="timeline">
+              <div class="timeline-step">
+                <div class="dot" aria-hidden="true"></div>
+                <div class="panel">
+                  <time>Days 1–3</time>
+                  <h3>Lock narrative and packaging</h3>
+                  <p>Finalize the one-platform story, define the Revenue Spine and Governance offers, and align the VC portal hierarchy.</p>
+                </div>
+              </div>
+              <div class="timeline-step">
+                <div class="dot" aria-hidden="true"></div>
+                <div class="panel">
+                  <time>Days 4–10</time>
+                  <h3>Select accounts and run outreach</h3>
+                  <p>Build the first account list, create wedge-specific outreach language, and book meetings tied to concrete offer proof.</p>
+                </div>
+              </div>
+              <div class="timeline-step">
+                <div class="dot" aria-hidden="true"></div>
+                <div class="panel">
+                  <time>Days 11–20</time>
+                  <h3>Drive pilot conversion</h3>
+                  <p>Push prospects into structured pilots with clear latency, automation, and governance deliverables.</p>
+                </div>
+              </div>
+              <div class="timeline-step">
+                <div class="dot" aria-hidden="true"></div>
+                <div class="panel">
+                  <time>Days 21–30</time>
+                  <h3>Package proof for investors</h3>
+                  <p>Capture meetings, pilots, usage, and performance signals as evidence that the nervous-system thesis is monetizing.</p>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <div class="stack">
+            <article class="card card--glow-blue signal-card">
+              <div class="section-label">
+                <i data-lucide="target" width="10" height="10" aria-hidden="true"></i>
+                Account target rule
+              </div>
+              <h3>Target 5–10 buyers</h3>
+              <ul>
+                <li>Compliance-sensitive enterprise operators.</li>
+                <li>Revenue teams with slow pipeline motion.</li>
+                <li>Organizations needing governed voice or orchestration deployment.</li>
+              </ul>
+            </article>
+            <article class="card card--glow-gold signal-card">
+              <div class="section-label">
+                <i data-lucide="users" width="10" height="10" aria-hidden="true"></i>
+                Owner model
+              </div>
+              <h3>Assign founders by wedge</h3>
+              <ul>
+                <li>Revenue wedge owner.</li>
+                <li>Governance wedge owner.</li>
+                <li>Shared investor-proof owner.</li>
+              </ul>
+            </article>
+          </div>
+        </div>
+
+        <div class="table-wrap" style="margin-top: var(--space-6);">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Workstream</th>
+                <th>Immediate deliverable</th>
+                <th>Owner</th>
+                <th class="align-right">Day-30 target</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Story</strong><br>Condense product complexity into one platform narrative.</td>
+                <td>1-minute pitch, homepage headline stack, wedge language.</td>
+                <td>Founder / strategy lead</td>
+                <td class="align-right">100% message alignment</td>
+              </tr>
+              <tr>
+                <td><strong>Revenue Spine</strong><br>Package Sales Dominator + IntentIQ.</td>
+                <td>Offer brief, pilot structure, pricing logic.</td>
+                <td>Revenue wedge owner</td>
+                <td class="align-right">3 qualified pilots</td>
+              </tr>
+              <tr>
+                <td><strong>Governance</strong><br>Package Red Team + Enterprise AI.</td>
+                <td>Security and governance proof deck with outreach angle.</td>
+                <td>Governance wedge owner</td>
+                <td class="align-right">2 live enterprise evaluations</td>
+              </tr>
+              <tr>
+                <td><strong>Investor proof</strong><br>Turn GTM motion into evidence.</td>
+                <td>Updated portal, meeting log, and proof metrics.</td>
+                <td>Shared operator</td>
+                <td class="align-right">1 investor-ready update loop</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <section class="section fade-in">
+      <div class="container container--wide">
+        <div class="callout">
+          <div class="callout-icon" aria-hidden="true">
+            <i data-lucide="shield-check" width="24" height="24"></i>
+          </div>
+          <div>
+            <h3>End the day with assets that can be used immediately</h3>
+            <p>The goal is not more internal clarity alone. The goal is external leverage: a sharper investor story, two clean offers, a revised portal structure, and an account board that turns the narrative into pipeline.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section--tight fade-in">
+      <div class="container container--wide">
+        <div class="section-header">
+          <div>
+            <div class="section-label">
+              <i data-lucide="file-text" width="10" height="10" aria-hidden="true"></i>
+              End-of-day board
+            </div>
+            <h2 class="section-heading">Exact outputs to leave with today</h2>
+            <p class="section-sub">These are the minimum artifacts that should exist before the day closes.</p>
+          </div>
+        </div>
+        <div class="footer-notes">
+          <article class="card card--glow-teal">
+            <div class="section-label">
+              <i data-lucide="check-circle-2" width="10" height="10" aria-hidden="true"></i>
+              Must ship
+            </div>
+            <ul>
+              <li>One investor-grade homepage headline and subhead.</li>
+              <li>One 60-second platform pitch.</li>
+              <li>Two offer sheets: Revenue Spine and AI Governance.</li>
+              <li>One account list with owner assignment.</li>
+            </ul>
+          </article>
+          <article class="card card--glow-coral">
+            <div class="section-label">
+              <i data-lucide="circle-slash-2" width="10" height="10" aria-hidden="true"></i>
+              Do not leave unresolved
+            </div>
+            <ul>
+              <li>The difference between ΔTOM, ATOM, and the parent brand.</li>
+              <li>Which products sit inside the immediate commercial wedge.</li>
+              <li>How the GPU advantage appears in customer-facing language.</li>
+              <li>What proof you will show investors by day 30.</li>
+            </ul>
+          </article>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container container--wide footer-inner">
+      <div class="footer-brand">ATOM Priority Command · Nirmata Holdings · © 2026</div>
+      <div class="footer-links">
+        <a href="#priorities">Priority stack</a>
+        <a href="#matrix">Portfolio</a>
+        <a href="#gtm">GTM board</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      if (window.lucide) lucide.createIcons();
+
+      const root = document.documentElement;
+      const themeToggle = document.querySelector('[data-theme-toggle]');
+      let theme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+      root.setAttribute('data-theme', theme);
+
+      const syncThemeLabel = () => {
+        const next = theme === 'dark' ? 'light' : 'dark';
+        themeToggle?.setAttribute('aria-label', `Switch to ${next} mode`);
+      };
+      syncThemeLabel();
+      themeToggle?.addEventListener('click', () => {
+        theme = theme === 'dark' ? 'light' : 'dark';
+        root.setAttribute('data-theme', theme);
+        syncThemeLabel();
+      });
+
+      const tabs = Array.from(document.querySelectorAll('.tab'));
+      const items = Array.from(document.querySelectorAll('.priority-item'));
+      tabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+          tabs.forEach(t => t.setAttribute('aria-pressed', 'false'));
+          tab.setAttribute('aria-pressed', 'true');
+          const filter = tab.dataset.filter;
+          items.forEach(item => {
+            item.style.display = filter === 'all' || item.dataset.group === filter ? 'grid' : 'none';
+          });
+        });
+      });
+
+      document.querySelectorAll('.check-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const row = btn.closest('.priority-item');
+          row.classList.toggle('done');
+        });
+      });
+
+      if (!CSS.supports('animation-timeline: scroll()') && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        const observer = new IntersectionObserver(entries => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('is-visible');
+              observer.unobserve(entry.target);
+            }
+          });
+        }, { threshold: 0.12 });
+        document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+      } else {
+        document.querySelectorAll('.fade-in').forEach(el => el.classList.add('is-visible'));
+      }
+    });
+  </script>
+</body>
+</html>
